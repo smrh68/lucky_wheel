@@ -2,6 +2,7 @@
 
 namespace App\Services\LotteryProcess;
 
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 
 class UpdateUserPointHandler extends AbstractLotteryHandler
@@ -11,6 +12,7 @@ class UpdateUserPointHandler extends AbstractLotteryHandler
         $user = Auth::user();
         $user->point -= 15 ;
         $user->save();
+        $user->awards()->syncWithPivotValues($request->selectedItem, ['time' => Carbon::now()], false);
 
         return parent::handle($request);
     }

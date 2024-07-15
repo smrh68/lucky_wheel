@@ -8,7 +8,7 @@ class CheckLotteryItemsHandler extends AbstractLotteryHandler
 {
     public function handle($request)
     {
-        $awards = Award::where('inventory', '>', 0)->get();
+        $awards = Award::where('inventory', '>', 0)->orWhere('title', 'empty')->get();
         if ($awards->count() < 2) {
             throw new \Exception('Only the empty option is available.', 503);
         }
