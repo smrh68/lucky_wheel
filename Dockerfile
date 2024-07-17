@@ -22,19 +22,8 @@ RUN apt-get update && apt-get install -y \
 # Install Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-# Copy existing application directory contents
-COPY . /var/www/html
-
 # Copy existing application directory permissions
 COPY --chown=www-data:www-data . /var/www/html
-
-# Update Apache configuration
-RUN echo "<Directory /var/www/html>\n\
-    Options Indexes FollowSymLinks\n\
-    AllowOverride All\n\
-    Require all granted\n\
-</Directory>" > /etc/apache2/conf-available/laravel.conf \
-    && a2enconf laravel
 
 # Expose port 80
 EXPOSE 80
